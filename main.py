@@ -6,15 +6,15 @@ from datetime import datetime, date
 from zhdate import ZhDate
 import sys
 import os
-
-
+ 
+ 
 def get_color():
     # 获取随机颜色
     get_colors = lambda n: list(map(lambda i: "#" + "%06x" % random.randint(0, 0xFFFFFF), range(n)))
     color_list = get_colors(100)
     return random.choice(color_list)
-
-
+ 
+ 
 def get_access_token():
     # appId
     app_id = config["app_id"]
@@ -30,8 +30,8 @@ def get_access_token():
         sys.exit(1)
     # print(access_token)
     return access_token
-
-
+ 
+ 
 def get_weather(province, city):
     # 城市id
     try:
@@ -45,7 +45,7 @@ def get_weather(province, city):
     t = (int(round(time() * 1000)))
     headers = {
         "Referer": "http://www.weather.com.cn/weather1d/{}.shtml".format(city_id),
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.42'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
                       'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
     }
     url = "http://d1.weather.com.cn/dingzhi/{}.html?_={}".format(city_id, t)
@@ -62,8 +62,8 @@ def get_weather(province, city):
     # 最低气温
     tempn = weatherinfo["tempn"]
     return weather, temp, tempn
-
-
+ 
+ 
 def get_birthday(birthday, year, today):
     birthday_year = birthday.split("-")[0]
     # 判断是否为农历生日
@@ -73,8 +73,8 @@ def get_birthday(birthday, year, today):
         # 今年生日
         birthday = ZhDate(year, r_mouth, r_day).to_datetime().date()
         year_date = birthday
-
-
+ 
+ 
     else:
         # 获取国历生日的今年对应月和日
         birthday_month = int(birthday.split("-")[1])
@@ -96,22 +96,21 @@ def get_birthday(birthday, year, today):
         birth_date = year_date
         birth_day = str(birth_date.__sub__(today)).split(" ")[0]
     return birth_day
-
-
+ 
+ 
 def get_ciba():
-    url = "" \
-          ""
+    url = "http://open.iciba.com/dsapi/"
     headers = {
         'Content-Type': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.42'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
                       'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
     }
     r = get(url, headers=headers)
     note_en = r.json()["content"]
     note_ch = r.json()["note"]
     return note_ch, note_en
-
-
+ 
+ 
 def send_message(to_user, access_token, city_name, weather, max_temperature, min_temperature, note_ch, note_en):
     url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={}".format(access_token)
     week_list = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
@@ -183,7 +182,7 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
         data["data"][key] = {"value": birthday_data, "color": get_color()}
     headers = {
         'Content-Type': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.42'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
                       'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
     }
     response = post(url, headers=headers, json=data).json()
@@ -197,8 +196,8 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
         print("推送消息成功")
     else:
         print(response)
-
-
+ 
+ 
 if __name__ == "__main__":
     try:
         with open("config.txt", encoding="utf-8") as f:
@@ -211,7 +210,7 @@ if __name__ == "__main__":
         print("推送消息失败，请检查配置文件格式是否正确")
         os.system("pause")
         sys.exit(1)
-
+ 
     # 获取accessToken
     accessToken = get_access_token()
     # 接收的用户
