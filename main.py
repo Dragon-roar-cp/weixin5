@@ -45,7 +45,7 @@ def get_weather(province, city):
     t = (int(round(time() * 1000)))
     headers = {
         "Referer": "http://www.weather.com.cn/weather1d/{}.shtml".format(city_id),
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.42'
                       'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
     }
     url = "http://d1.weather.com.cn/dingzhi/{}.html?_={}".format(city_id, t)
@@ -103,7 +103,7 @@ def get_ciba():
           ""
     headers = {
         'Content-Type': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.42'
                       'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
     }
     r = get(url, headers=headers)
@@ -183,7 +183,7 @@ def send_message(to_user, access_token, city_name, weather, max_temperature, min
         data["data"][key] = {"value": birthday_data, "color": get_color()}
     headers = {
         'Content-Type': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.42'
                       'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
     }
     response = post(url, headers=headers, json=data).json()
